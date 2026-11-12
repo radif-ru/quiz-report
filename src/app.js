@@ -8,21 +8,66 @@ function escapeHtml(value) {
     .replaceAll("'", '&#039;')
 }
 
+/**
+ * Возвращает попытки из window.reportData по значению фильтра.
+ * @param {string} filter all — все, passed — прошедшие порог, failed — не прошедшие
+ * @returns {Array<object>} попытки в исходном порядке
+ */
 function selectAttempts(filter) {
-  // TODO: верните все попытки, прошедшие или не прошедшие порог.
+  const attempts = window.reportData.attempts
+
+  if (filter === 'all') {
+    return attempts
+  }
+  if (filter === 'passed') {
+    return attempts.filter((attempt) => attempt.passed === true)
+  }
+  if (filter === 'failed') {
+    return attempts.filter((attempt) => attempt.passed === false)
+  }
   return []
 }
 
-function renderAttempts(attempts) {
-  // TODO: соберите строки списка через forEach и строковый аккумулятор.
-  // Перед вставкой имени вызовите готовую escapeHtml().
+/**
+ * Собирает строки списка через forEach и строковый аккумулятор
+ * и заменяет ими содержимое #result-list.
+ * @param {Array<object>} attempts попытки для показа
+ * @param {Element} [list] элемент списка; по умолчанию #result-list
+ * @returns {string} вставленная HTML-строка
+ */
+function renderAttempts(attempts, list = document.querySelector('#result-list')) {
+  let markup = ''
+
+  attempts.forEach((attempt) => {
+    const status = attempt.passed ? 'Порог пройден' : 'Порог не пройден'
+    markup += `
+          <li class="result-item">
+            <span class="result-name">${escapeHtml(attempt.name)}</span>
+            <span>${attempt.score} из ${attempt.questionCount} (${attempt.percentage}%) — ${status}</span>
+          </li>`
+  })
+
+  list.innerHTML = markup
+  return markup
 }
 
+/**
+ * Подключает форму фильтра: по submit выбирает попытки и обновляет
+ * счётчик и список без перезагрузки страницы.
+ */
 function startFilter() {
-  // TODO: найдите форму, select, счётчик и список через querySelector().
-  // TODO: подпишитесь на submit через addEventListener().
-  // В обработчике вызовите preventDefault(), прочитайте value,
-  // выберите попытки и замените innerHTML счётчика и списка.
+  const form = document.querySelector('#filter-form')
+  const select = document.querySelector('#filter')
+  const count = document.querySelector('#result-count')
+  const list = document.querySelector('#result-list')
+
+  form.addEventListener('submit', (event) => {
+    event.preventDefault()
+    const attempts = selectAttempts(select.value)
+    const total = window.reportData.attempts.length
+    count.textContent = `Показано: ${attempts.length} из ${total}`
+    renderAttempts(attempts, list)
+  })
 }
 
 startFilter()
