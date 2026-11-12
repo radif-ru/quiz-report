@@ -1,3 +1,87 @@
-/* TODO: оформите отчёт без Flexbox и Grid.
-   Нужны минимум три классовых селектора, цвета, padding, border и margin.
-   Карточки сводки и строки участников должны отличаться от фона страницы. */
+/* Отчёт по викторине: одна колонка, без Flexbox и Grid */
+
+body {
+  margin: 0;
+  padding: 24px 16px;
+  background-color: #eef2f7;
+  color: #1f2933;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.5;
+}
+
+h1 {
+  margin: 0 0 16px;
+  color: #102a43;
+}
+
+h2 {
+  margin: 24px 0 12px;
+  color: #243b53;
+  font-size: 20px;
+}
+
+.report {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.summary-card {
+  display: inline-block;
+  box-sizing: border-box;
+  width: 48%;
+  margin: 0 1% 12px 0;
+  padding: 12px 16px;
+  border: 1px solid #c8d3e0;
+  border-radius: 8px;
+  background-color: #ffffff;
+  vertical-align: top;
+}
+
+.summary-card strong {
+  display: block;
+  margin-top: 4px;
+  color: #1d4ed8;
+  font-size: 18px;
+}
+
+form {
+  margin: 0 0 12px;
+}
+
+select,
+button {
+  margin-left: 8px;
+  padding: 4px 10px;
+  border: 1px solid #9fb3c8;
+  border-radius: 4px;
+  background-color: #ffffff;
+  color: #1f2933;
+  font: inherit;
+}
+
+button {
+  border-color: #1d4ed8;
+  background-color: #1d4ed8;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.result-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.result-item {
+  margin: 0 0 8px;
+  padding: 10px 14px;
+  border: 1px solid #c8d3e0;
+  border-left: 4px solid #1d4ed8;
+  border-radius: 6px;
+  background-color: #ffffff;
+}
+
+.result-name {
+  margin-right: 8px;
+  font-weight: bold;
+}
