@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+
+      - name: Check syntax
+        run: npm run check
+
+      - name: Run tests
+        run: npm test
+
+      - name: Check submission folder has exactly the required files
+        run: |
+          test "$(cd src && find . -type f | sort | tr '\n' ' ')" = \
+            './app.js ./data/results.json ./generator.js ./package.json ./report.html ./stats.js ./style.css '
+
+      - name: Generate report from control data without npm install
+        working-directory: src
+        run: |
+          npm start -- ./data/results.json | tee "$RUNNER_TEMP/summary.txt"
+          for line in 'Участников: 7' 'Средний результат: 60%' \
+            'Лучший результат: Анна — 6 из 6 (100%)' 'Порог пройден: 4 из 7' 'Отчёт: report.html'; do
+            grep -qxF "$line" "$RUNNER_TEMP/summary.txt"
+          done
+          git diff --exit-code report.html
