@@ -1,0 +1,16 @@
+{
+  "name": "quiz-report",
+  "version": "1.0.0",
+  "description": "Генератор HTML-отчёта по результатам викторины: Node.js, ESM, fs/promises и DOM",
+  "type": "module",
+  "scripts": {
+    "check": "node --check src/app.js && node --check src/stats.js && node --check src/generator.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "author": "Radif Ilaltdinov <i@radif.ru>",
+  "license": "UNLICENSED",
+  "private": true
+}
